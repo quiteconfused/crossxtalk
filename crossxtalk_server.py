@@ -13,6 +13,7 @@ class ClientThread(threading.Thread):
     q =""
     rating = 50
     known_users = []
+    num_of_rating = 0
     disconnect=False
 
     def __init__(self,ip,port,socket):
@@ -146,10 +147,21 @@ class ClientThread(threading.Thread):
 
         found_username=False
         for x in range(len(threads)):
-            if(threads[x].username==username):
+            if(threads[x].username==username && threads[x].username!=self.username):
                 found_username=True
+                if(threads[x].num_of_rating < 5):
+                    threads[x].num_of_rating = threads[x].num_of_rating+1
                 threads[x].rating = rating
                 break
+        top = 0
+        bottom = 0
+        
+        for x in range(len(threads)):
+            if(threads[x].username!=self.username):
+                top += (1-((5-threads[x].num_of_rating)/5))*threads[x].rating
+                bottom += (1-((5-threads[x].num_of_rating)/5))
+        
+        self.rating = top/bottom
 
         self.send("OK")
 
