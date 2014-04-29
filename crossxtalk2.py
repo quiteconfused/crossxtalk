@@ -112,7 +112,7 @@ class EntryWindow(Gtk.Window):
             match=5
             output = self.do_external_process('vid -s %s -g %s'%(username, filename))
         else:
-            match=-10
+            match=-20
 
         for x in range(len(self.users)):
             if(self.users[x][0]==username):
